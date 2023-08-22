@@ -33,4 +33,14 @@ public class AuthService {
                 .build();
     }// retrun 타입 바꿔야함
 
+    public TokenDTO signIn(AuthDTO authDTO) {
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        return jwtTokenProvider.generateTokenDTO(authentication);
+    }
+
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
 }

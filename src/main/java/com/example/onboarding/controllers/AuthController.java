@@ -23,4 +23,9 @@ public class AuthController {
         return ResponseEntity.ok(authService.registerNewUserAccount(authDTO));
     }
 
+    @PostMapping("/signin")
+    public ResponseEntity<TokenDTO> signIn(@RequestBody @Valid AuthDTO authDTO){
+        return ResponseEntity.ok(authService.signIn(authDTO));
+    }
+
 }
