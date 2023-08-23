@@ -2,11 +2,15 @@ package com.example.onboarding.DTOs;
 
 import com.example.onboarding.entities.Authority;
 import com.example.onboarding.entities.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class AuthRequestDTO {
     private String email;
