@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -20,5 +22,15 @@ public class TodoService {
         todoRepository.save(todo);
 
         return todoDTO;
+    }
+
+    public List<TodoDTO> getTodos(User user) {
+        return todoRepository.findAllByUserId(user.getId())
+                .stream().map(todo -> new TodoDTO(todo.getContent()))
+                .toList();
+    }
+
+    public void deleteTodo(Long id) {
+        todoRepository.deleteById(id);
     }
 }
