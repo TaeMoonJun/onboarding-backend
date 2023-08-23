@@ -5,6 +5,7 @@ import com.example.onboarding.entities.User;
 import com.example.onboarding.services.AuthService;
 import com.example.onboarding.services.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+@SecurityRequirement(name = "JWT Token")
 @RestController
 @RequestMapping("/todos")
 @RequiredArgsConstructor
