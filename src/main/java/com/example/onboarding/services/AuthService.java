@@ -37,7 +37,9 @@ public class AuthService {
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(authRequestDTO.getEmail(), authRequestDTO.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        return jwtTokenProvider.generateTokenDTO(authentication);
+        return TokenDTO.builder()
+                .access_token(jwtTokenProvider.generateTokenDTO(authentication))
+                .build();
     }
 
     public Optional<User> getUserById(Long id) {

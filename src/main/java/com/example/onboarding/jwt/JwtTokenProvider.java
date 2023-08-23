@@ -1,6 +1,5 @@
 package com.example.onboarding.jwt;
 
-import com.example.onboarding.DTOs.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -33,7 +32,7 @@ public class JwtTokenProvider {
 
 
     // 토큰 생성
-    public TokenDTO generateTokenDTO(Authentication authentication) {
+    public String generateTokenDTO(Authentication authentication) {
 
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -46,18 +45,12 @@ public class JwtTokenProvider {
 
         System.out.println(tokenExpiresIn);
 
-        String accessToken = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .setExpiration(tokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-
-        return TokenDTO.builder()
-                .grantType("bearer")
-                .accessToken(accessToken)
-                .tokenExpiresIn(tokenExpiresIn.getTime())
-                .build();
     }
 
     public Authentication getAuthentication(String accessToken) {
