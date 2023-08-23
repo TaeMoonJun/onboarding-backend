@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Builder
 @Data
-public class AuthDTO {
+public class AuthRequestDTO {
     private String email;
     private String password;
 
