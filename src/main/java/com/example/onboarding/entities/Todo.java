@@ -27,4 +27,8 @@ public class Todo {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void updateTodo(String content) {
+        this.content = content;
+    }
 }
