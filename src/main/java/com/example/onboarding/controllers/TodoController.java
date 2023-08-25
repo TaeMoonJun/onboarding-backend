@@ -26,7 +26,7 @@ public class TodoController {
 
     @Operation(summary = "Todo 생성")
     @PostMapping("")
-    ResponseEntity<TodoResponseDTO> createTodo(Principal principal, @RequestBody TodoRequestDTO todoDTO) {
+    ResponseEntity<TodoResponseDTO> createTodo(Principal principal, @RequestBody TodoRequestDTO todoRequestDTO) {
         Optional<User> optionalUser = authService.getUserById(Long.valueOf(principal.getName()));
         User user;
 
@@ -34,7 +34,7 @@ public class TodoController {
             user = optionalUser.get();
         } else throw new UsernameNotFoundException("User Not found");
 
-        return ResponseEntity.ok(todoService.createTodo(user, todoDTO));
+        return ResponseEntity.ok(todoService.createTodo(user, todoRequestDTO));
     }
 
     @Operation(summary = "사용자 Todo 리스트 조회")
@@ -54,5 +54,11 @@ public class TodoController {
     ResponseEntity<String> deleteTodo(@PathVariable("id") Long id) {
         todoService.deleteTodo(id);
         return ResponseEntity.ok("Successfully Deleted");
+    }
+
+    @Operation(summary = "Todo 업데이트")
+    @PutMapping("/{id}")
+    ResponseEntity<TodoResponseDTO> updateTodo(@PathVariable("id") Long id, @RequestBody TodoRequestDTO todoRequestDTO) {
+        return ResponseEntity.ok(todoService.updateTodo(id, todoRequestDTO));
     }
 }
