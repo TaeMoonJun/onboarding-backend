@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TodoDTO {
+public class TodoRequestDTO {
     private String todo;
 
     public Todo toEntity() {

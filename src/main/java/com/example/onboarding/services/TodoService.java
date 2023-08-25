@@ -1,6 +1,7 @@
 package com.example.onboarding.services;
 
-import com.example.onboarding.DTOs.TodoDTO;
+import com.example.onboarding.DTOs.TodoRequestDTO;
+import com.example.onboarding.DTOs.TodoResponseDTO;
 import com.example.onboarding.entities.Todo;
 import com.example.onboarding.entities.User;
 import com.example.onboarding.repositories.TodoRepository;
@@ -16,17 +17,20 @@ import java.util.List;
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    public TodoDTO createTodo(User user, TodoDTO todoDTO) {
+    public TodoResponseDTO createTodo(User user, TodoRequestDTO todoDTO) {
         Todo todo = todoDTO.toEntity();
         user.addTodo(todo);
         todoRepository.save(todo);
 
-        return todoDTO;
+        return TodoResponseDTO.builder()
+                .id(todo.getId())
+                .todo(todo.getContent())
+                .build();
     }
 
-    public List<TodoDTO> getTodos(User user) {
+    public List<TodoResponseDTO> getTodos(User user) {
         return todoRepository.findAllByUserId(user.getId())
-                .stream().map(todo -> new TodoDTO(todo.getContent()))
+                .stream().map(todo -> new TodoResponseDTO(todo.getId(), todo.getContent()))
                 .toList();
     }
 
