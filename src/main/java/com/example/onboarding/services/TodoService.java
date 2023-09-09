@@ -5,6 +5,7 @@ import com.example.onboarding.DTOs.TodoResponseDTO;
 import com.example.onboarding.entities.Todo;
 import com.example.onboarding.entities.User;
 import com.example.onboarding.repositories.TodoRepository;
+import com.example.onboarding.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +17,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
+    private final UserRepository userRepository;
 
-    public TodoResponseDTO createTodo(User user, TodoRequestDTO todoDTO) {
-        Todo todo = todoDTO.toEntity();
-        user.addTodo(todo);
+    public TodoResponseDTO createTodo(Long userId, TodoRequestDTO todoDTO) {
+        User user = userRepository.findById(userId).get();
+        Todo todo = Todo.builder()
+                .user(user)
+                .content(todoDTO.getTodo())
+                .build();
         todoRepository.save(todo);
 
         return TodoResponseDTO.builder()
@@ -28,8 +33,8 @@ public class TodoService {
                 .build();
     }
 
-    public List<TodoResponseDTO> getTodos(User user) {
-        return todoRepository.findAllByUserId(user.getId())
+    public List<TodoResponseDTO> getTodos(Long userId) {
+        return todoRepository.findAllByUserId(userId)
                 .stream().map(todo -> new TodoResponseDTO(todo.getId(), todo.getContent()))
                 .toList();
     }
