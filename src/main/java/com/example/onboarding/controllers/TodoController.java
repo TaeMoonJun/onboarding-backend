@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +22,14 @@ public class TodoController {
 
     @Operation(summary = "Todo 생성")
     @PostMapping("")
-    ResponseEntity<TodoResponseDTO> createTodo(@AuthenticationPrincipal Long userId, @RequestBody TodoRequestDTO todoRequestDTO) {
-        return ResponseEntity.ok(todoService.createTodo(userId, todoRequestDTO));
+    ResponseEntity<TodoResponseDTO> createTodo(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TodoRequestDTO todoRequestDTO) {
+        return ResponseEntity.ok(todoService.createTodo(Long.valueOf(userDetails.getUsername()), todoRequestDTO));
     }
 
     @Operation(summary = "사용자 Todo 리스트 조회")
     @GetMapping("")
-    ResponseEntity<List<TodoResponseDTO>> getTodos(@AuthenticationPrincipal Long userId) {
-        return ResponseEntity.ok(todoService.getTodos(userId));
+    ResponseEntity<List<TodoResponseDTO>> getTodos(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(todoService.getTodos(Long.valueOf(userDetails.getUsername())));
     }
     
     @Operation(summary = "Todo 삭제")
