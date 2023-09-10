@@ -1,8 +1,8 @@
 package com.example.onboarding.controllers;
 
-import com.example.onboarding.DTOs.AuthRequestDTO;
-import com.example.onboarding.DTOs.SignUpResponseDTO;
-import com.example.onboarding.DTOs.TokenDTO;
+import com.example.onboarding.DTOs.AuthRequest;
+import com.example.onboarding.DTOs.SignUpResponse;
+import com.example.onboarding.DTOs.Token;
 import com.example.onboarding.config.NoAuth;
 import com.example.onboarding.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,15 +24,15 @@ public class AuthController {
     @NoAuth
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody @Valid AuthRequestDTO authRequestDTO){
-        return ResponseEntity.ok(authService.signUp(authRequestDTO));
+    public ResponseEntity<SignUpResponse> signUp(@RequestBody @Valid AuthRequest authRequest){
+        return ResponseEntity.ok(authService.signUp(authRequest));
     }
 
     @NoAuth
     @Operation(summary = "로그인")
     @PostMapping("/signin")
-    public ResponseEntity<TokenDTO> signIn(@RequestBody @Valid AuthRequestDTO authRequestDTO){
-        return ResponseEntity.ok(authService.signIn(authRequestDTO));
+    public ResponseEntity<Token> signIn(@RequestBody @Valid AuthRequest authRequest){
+        return ResponseEntity.ok(authService.signIn(authRequest));
     }
 
 }

@@ -1,8 +1,8 @@
 package com.example.onboarding.services;
 
-import com.example.onboarding.DTOs.AuthRequestDTO;
-import com.example.onboarding.DTOs.SignUpResponseDTO;
-import com.example.onboarding.DTOs.TokenDTO;
+import com.example.onboarding.DTOs.AuthRequest;
+import com.example.onboarding.DTOs.SignUpResponse;
+import com.example.onboarding.DTOs.Token;
 import com.example.onboarding.entities.User;
 import com.example.onboarding.jwt.JwtTokenProvider;
 import com.example.onboarding.repositories.UserRepository;
@@ -26,18 +26,18 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public SignUpResponseDTO signUp(AuthRequestDTO authRequestDTO) {
-        User user = userRepository.save(authRequestDTO.toEntity(passwordEncoder));
-        return SignUpResponseDTO.builder()
+    public SignUpResponse signUp(AuthRequest authRequest) {
+        User user = userRepository.save(authRequest.toEntity(passwordEncoder));
+        return SignUpResponse.builder()
                 .email(user.getEmail())
                 .build();
-    }// retrun 타입 바꿔야함
+    }
 
-    public TokenDTO signIn(AuthRequestDTO authRequestDTO) {
+    public Token signIn(AuthRequest authRequest) {
         UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(authRequestDTO.getEmail(), authRequestDTO.getPassword());
+                = new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        return TokenDTO.builder()
+        return Token.builder()
                 .access_token(jwtTokenProvider.generateTokenDTO(authentication))
                 .build();
     }

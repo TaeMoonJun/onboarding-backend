@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AuthRequestDTO {
+public class AuthRequest {
     private String email;
     private String password;
 

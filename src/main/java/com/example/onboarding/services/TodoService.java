@@ -1,7 +1,7 @@
 package com.example.onboarding.services;
 
-import com.example.onboarding.DTOs.TodoRequestDTO;
-import com.example.onboarding.DTOs.TodoResponseDTO;
+import com.example.onboarding.DTOs.TodoRequest;
+import com.example.onboarding.DTOs.TodoResponse;
 import com.example.onboarding.entities.Todo;
 import com.example.onboarding.entities.User;
 import com.example.onboarding.repositories.TodoRepository;
@@ -19,23 +19,23 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
 
-    public TodoResponseDTO createTodo(Long userId, TodoRequestDTO todoDTO) {
+    public TodoResponse createTodo(Long userId, TodoRequest todoRequest) {
         User user = userRepository.findById(userId).get();
         Todo todo = Todo.builder()
                 .user(user)
-                .content(todoDTO.getTodo())
+                .content(todoRequest.getTodo())
                 .build();
         todoRepository.save(todo);
 
-        return TodoResponseDTO.builder()
+        return TodoResponse.builder()
                 .id(todo.getId())
                 .todo(todo.getContent())
                 .build();
     }
 
-    public List<TodoResponseDTO> getTodos(Long userId) {
+    public List<TodoResponse> getTodos(Long userId) {
         return todoRepository.findAllByUserId(userId)
-                .stream().map(todo -> new TodoResponseDTO(todo.getId(), todo.getContent()))
+                .stream().map(todo -> new TodoResponse(todo.getId(), todo.getContent()))
                 .toList();
     }
 
@@ -43,11 +43,11 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
-    public TodoResponseDTO updateTodo(Long id, TodoRequestDTO todoRequestDTO) {
+    public TodoResponse updateTodo(Long id, TodoRequest todoRequest) {
         //isPresent()
         Todo todo = todoRepository.findById(id).get();
-        todo.updateTodo(todoRequestDTO.getTodo());
-        return TodoResponseDTO.builder()
+        todo.updateTodo(todoRequest.getTodo());
+        return TodoResponse.builder()
                 .id(todo.getId())
                 .todo(todo.getContent())
                 .build();

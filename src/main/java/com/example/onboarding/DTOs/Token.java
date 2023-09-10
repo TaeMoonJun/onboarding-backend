@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TokenDTO {
+public class Token {
     private String access_token;
 }
